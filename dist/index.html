@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Reverse Engineering Provenance</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" type="text/javascript"></script>
+    <!-- <script src="./mimic.js" type="text/javascript"></script> -->
+    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script> -->
+    <link rel="shortcut icon" href="about:blank">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  
+  </script>
+  </head>
+  <body>
+    
+    
+    <div id="state"></div>
+    <div id="vis"></div>
+    <div id="slidedeck_root"></div>
+    <!-- <button id="play">PLAY</button> -->
+
+    <!-- <p>Make Comment:</p>
+    <input type="text" id="n1"/>
+    <input type="text" id="n2"/>
+    <button id="makeComment">Update Comment</button>
+    
+    <p>Jump:</p>
+    <input type="text" id="n3"/>
+    <button id="makeJump">Update Jump</button>
+    
+    <p>Set Color:</p>
+    <input type="text" id="n4"/>
+    <input type="text" id="n5"/>
+    <button id="makeColor">Update Color</button>
+    
+    <p>Undo:</p>
+    <button id="makeUndo">Undo</button> -->
+
+  <script type="text/javascript" src="bundle.js"></script></body>
+
+  <script>
+    (function () {
+      var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+      if (!isChrome) {
+        alert('This application was designed to be used in Google Chrome.\nRunning the application in other browsers might result in performance issues or other misbehavior.');
+      }
+    })();
+  </script>
+
+</html>

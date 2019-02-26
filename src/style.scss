@@ -1,0 +1,102 @@
+html,
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+                          // height: 100%;
+                          position: relative;
+  margin: 0 0 0 0;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+  // position: absolute;
+  //width: 100%;
+  // height: 900px;
+
+}
+
+// body {
+//   //margin: 1em 1em 1em 1em;
+
+// }
+
+#vis {
+  border: 2px solid lightgrey;
+  border-radius: 5px;
+  margin: 2px;
+
+  * {
+    border: none;
+  }
+
+  margin-top: 0;
+  font-size: 18px;
+  margin-bottom: 0.1em;
+
+  color: yellow;
+  vertical-align: middle;
+
+  font-size: 80%;
+  line-height: 1;
+  // position: relative;
+  top: -1px;
+
+
+  height: 7in;           // 300px;
+  width: 300px;           // 300px;
+  text-size-adjust: 100%;
+
+}
+
+.node {
+  fill: lightsteelblue;
+  stroke: steelblue;
+  cursor: pointer;
+
+  circle {
+    stroke-width: .1%;  // 0.3px;
+  }
+
+  &.branch-active {
+    fill: yellow;
+    background-color: #ccc;
+    text {
+      display: block;
+    }
+  }
+
+  &.node-active {
+    fill: blue;
+    stroke: darkblue;
+    font-weight: bold;
+  }
+
+  text {
+    display: none;
+    fill: black;
+    stroke-width: 0.2px;
+    font-family: sans-serif;
+  }
+}
+
+.link {
+  fill: none;
+  stroke: black;
+  stroke-width: 0.5px;
+  &.active {
+    stroke: black;
+  }
+}
+
+.intent_multiply {
+  fill: red;
+}
+
+.intent_add {
+  fill: green;
+}
+
+.intent_subtract {
+  fill: indigo;
+}

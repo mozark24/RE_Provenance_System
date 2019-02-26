@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "lib": ["es2015", "es2017", "dom"],
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "sourceRoot": "./src",
+    "module": "commonjs",
+    "target": "es5",
+    "jsx": "react",
+    "allowJs": true,
+    "typeRoots": ["./node_modules/@types"],
+    "types": ["node"]
+  }
+}
