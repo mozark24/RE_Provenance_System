@@ -406,58 +406,93 @@ export class FileChange {
     public async setupBasicGraph() {
         const intermediateNode = await this.makeActionAndApply(
             true,
-            'view Graph:PE',
+            'View: Graph:PE',
             'view',
             ['0x401000', 'Graph:PE'],
-            'view',
+            'view:',
             ['0x401000', 'Graph:PE'],
-          ); 
+        ); 
+        
+        // Graph Scenario #1 - Works with White_rabbit.exe
+        /*
+        await this.makeActionAndApply(true, 'Comm: input_fxn?', 'CommentUpdated',['0x402db4','Starting here','0x402cc0'], 'CommentUpdated', ['0x402db4','','0x402cc0'],)
+        await this.makeActionAndApply(true, 'Func: setup_fxn()?', 'CommentUpdated',['0x403c90','arg1->???','???','0x403c90'], 'CommentUpdated',['0x403c90','','0x403c90']);
+        await this.makeActionAndApply(true, 'Func: setup_fxn()?', 'CommentUpdated',['0x403c90','arg1->???','???','0x403c90'], 'CommentUpdated',['0x403c90','','0x403c90']);
+        await this.makeActionAndApply(true, 'Func: setup_fxn()?', 'CommentUpdated',['0x403c90','arg1->???','???','0x403c90'], 'CommentUpdated',['0x403c90','','0x403c90']);
+
+        await this.traverser.toStateNode(intermediateNode.id);
+        await this.makeActionAndApply(true, 'Func: setup_fxn()','FuncNameUpdate',['0x402cc0', 'setup_fxn()'], 'FuncNameUpdate', ['0x402cc0', 'sub_402cc0']);
+        const testNode = await this.makeActionAndApply(true, 'Func: main()','FuncNameUpdate',['0x403cd0', 'main()'], 'FuncNameUpdate', ['0x403cd0', 'sub_403cd0']);
+        
+        // await this.makeActionAndApply(true, 'View: Strings','FuncNameUpdate',['0x403cd0', 'main()'], 'FuncNameUpdate', ['0x403cd0', 'sub_403cd0']);
+        // await this.makeActionAndApply(true, 'Comm: password#1', 'CommentUpdated',['0x402db4','Intro Text','0x402cc0'], 'CommentUpdated', ['0x402db4','','0x402cc0']);
+        // await this.makeActionAndApply(true, 'Func: pw#1_logic()','FuncNameUpdate',['0x4034d0', 'pw#1_logic()'], 'FuncNameUpdate', ['0x4034d0', 'sub_4034d0']);
+
+        await this.makeActionAndApply(true, 'Var: arg1->data', 'LocVarUpdate',['0x403c90','int32_t','data','5'], 'LocVarUpdate',['0x403c90','int32_t','arg1','5']);
+        const testNode4 = await this.makeActionAndApply(true, 'Var: arg1->data','FuncNameUpdate',['0x403c90', 'xor_decryptor()'], 'FuncNameUpdate', ['0x403c90', 'sub_403c90']);
+        // await this.makeActionAndApply(true, 'Var: arg2->password?','FuncNameUpdate',['0x403c90', 'xor_decryptor()'], 'FuncNameUpdate', ['0x403c90', 'sub_403c90']);
+        
+        // await this.traverser.toStateNode(testNode.id);
+
+        await this.makeActionAndApply(true, 'Var: arg2->size', 'LocVarUpdate',['0x403c90','int32_t','size','6'], 'LocVarUpdate',['0x403c90','int32_t','arg2','6']);
+        await this.traverser.toStateNode(testNode4.id);
+        await this.makeActionAndApply(true, 'Var: arg3->password', 'LocVarUpdate',['0x403c90','int32_t','password','7'], 'LocVarUpdate',['0x403c90','int32_t','arg3','7']);
+        // await this.makeActionAndApply(true, 'Var: int32_t->char*', 'LocVarUpdate',['0x403c90','int32_t','password','7'], 'LocVarUpdate',['0x403c90','int32_t','arg3','7']);
+
+        // await this.makeActionAndApply(true, 'Comm: input_fxn?', 'CommentUpdated',['0x402db4','Starting here','0x402cc0'], 'CommentUpdated', ['0x402db4','','0x402cc0'],)
+        // await this.makeActionAndApply(true, 'Func: setup_fxn()?', 'CommentUpdated',['0x403c90','arg1->???','???','0x403c90'], 'CommentUpdated',['0x403c90','','0x403c90']);
+
+        // await this.traverser.toStateNode(intermediateNode.id);
+        await this.makeActionAndApply(true, 'Func: user_input()','FuncNameUpdate',['0x402cc0', 'setup_fxn()'], 'FuncNameUpdate', ['0x402cc0', 'sub_402cc0']);
+        // const testNode = await this.makeActionAndApply(true, 'Func: func_2()','FuncNameUpdate',['0x403cd0', 'main()'], 'FuncNameUpdate', ['0x403cd0', 'sub_403cd0']);
+        
+        // await this.makeActionAndApply(true, 'View: Strings','FuncNameUpdate',['0x403cd0', 'main()'], 'FuncNameUpdate', ['0x403cd0', 'sub_403cd0']);
+        // const testNode3 =await this.makeActionAndApply(true, 'Comm: password#1', 'CommentUpdated',['0x402db4','Intro Text','0x402cc0'], 'CommentUpdated', ['0x402db4','','0x402cc0']);
+        // await this.makeActionAndApply(true, 'Var: arg1->index','FuncNameUpdate',['0x4034d0', 'pw#1_logic()'], 'FuncNameUpdate', ['0x4034d0', 'sub_4034d0']);
+
+        await this.traverser.toStateNode(testNode.id);
+        await this.makeActionAndApply(true, 'Comm: user_input()', 'CommentUpdated',['0x402db4','Starting here','0x402cc0'], 'CommentUpdated', ['0x402db4','','0x402cc0'],)
+        
+        await this.makeActionAndApply(true, 'Var: arg1->size','FuncNameUpdate',['0x4034d0', 'pw#1_logic()'], 'FuncNameUpdate', ['0x4034d0', 'sub_4034d0']);
+
+        // const testNode2 = await this.makeActionAndApply(true, 'Var: arg1->data', 'LocVarUpdate',['0x403c90','int32_t','data','5'], 'LocVarUpdate',['0x403c90','int32_t','arg1','5']);
+        
+        // await this.traverser.toStateNode(testNode3.id);
+        // await this.makeActionAndApply(true, 'Var: arg1->index','FuncNameUpdate',['0x403c90', 'xor_decryptor()'], 'FuncNameUpdate', ['0x403c90', 'sub_403c90']);
+        await this.makeActionAndApply(true, 'Var: arg2->buffer','FuncNameUpdate',['0x403c90', 'xor_decryptor()'], 'FuncNameUpdate', ['0x403c90', 'sub_403c90']);
+        */
+
+        // Prov Graph Scenario #2:
+
+        await this.makeActionAndApply(true, 'Comm: input_fxn?', 'CommentUpdated',['0x402db4','Starting here','0x402cc0'], 'CommentUpdated', ['0x402db4','','0x402cc0'],)
+        await this.makeActionAndApply(true, 'Func: setup_fxn()?', 'CommentUpdated',['0x403c90','arg1->???','???','0x403c90'], 'CommentUpdated',['0x403c90','','0x403c90']);
+        // await this.makeActionAndApply(true, 'Func: setup_fxn()?', 'CommentUpdated',['0x403c90','arg1->???','???','0x403c90'], 'CommentUpdated',['0x403c90','','0x403c90']);
+        // await this.makeActionAndApply(true, 'Func: setup_fxn()?', 'CommentUpdated',['0x403c90','arg1->???','???','0x403c90'], 'CommentUpdated',['0x403c90','','0x403c90']);
+
+        await this.traverser.toStateNode(intermediateNode.id);
+        await this.makeActionAndApply(true, 'Func: setup_fxn()','FuncNameUpdate',['0x402cc0', 'setup_fxn()'], 'FuncNameUpdate', ['0x402cc0', 'sub_402cc0']);
+        const testNode = await this.makeActionAndApply(true, 'Func: main()','FuncNameUpdate',['0x403cd0', 'main()'], 'FuncNameUpdate', ['0x403cd0', 'sub_403cd0']);
+        
+        await this.makeActionAndApply(true, 'View: Strings','FuncNameUpdate',['0x403cd0', 'main()'], 'FuncNameUpdate', ['0x403cd0', 'sub_403cd0']);
+        await this.makeActionAndApply(true, 'Comm: password#1', 'CommentUpdated',['0x402db4','Intro Text','0x402cc0'], 'CommentUpdated', ['0x402db4','','0x402cc0']);
+        await this.makeActionAndApply(true, 'Func: pw#1_logic()','FuncNameUpdate',['0x4034d0', 'pw#1_logic()'], 'FuncNameUpdate', ['0x4034d0', 'sub_4034d0']);
+
+        // await this.makeActionAndApply(true, 'Var: arg1->data', 'LocVarUpdate',['0x403c90','int32_t','data','5'], 'LocVarUpdate',['0x403c90','int32_t','arg1','5']);
+        const testNode4 = await this.makeActionAndApply(true, 'Var: arg1->data','FuncNameUpdate',['0x403c90', 'xor_decryptor()'], 'FuncNameUpdate', ['0x403c90', 'sub_403c90']);
+        // await this.makeActionAndApply(true, 'Var: arg2->password?','FuncNameUpdate',['0x403c90', 'xor_decryptor()'], 'FuncNameUpdate', ['0x403c90', 'sub_403c90']);
+        
+        // await this.traverser.toStateNode(testNode.id);
+
+        await this.makeActionAndApply(true, 'Var: arg2->size', 'LocVarUpdate',['0x403c90','int32_t','size','6'], 'LocVarUpdate',['0x403c90','int32_t','arg2','6']);
+        await this.traverser.toStateNode(testNode4.id);
+        await this.makeActionAndApply(true, 'Var: arg2->size', 'LocVarUpdate',['0x403c90','int32_t','size','6'], 'LocVarUpdate',['0x403c90','int32_t','arg2','6']);
+        
+        await this.makeActionAndApply(true, 'Var: arg3->password', 'LocVarUpdate',['0x403c90','int32_t','password','7'], 'LocVarUpdate',['0x403c90','int32_t','arg3','7']);
+        await this.makeActionAndApply(true, 'Var: int32_t->char*', 'LocVarUpdate',['0x403c90','int32_t','password','7'], 'LocVarUpdate',['0x403c90','int32_t','arg3','7']);
+
+        
+        
+        
     }
     
 }
-
-// const visDiv: HTMLDivElement = document.getElementById('vis') as HTMLDivElement;
-// const stateDiv: HTMLDivElement = document.getElementById(
-//   'state',
-// ) as HTMLDivElement;
-
-
-// const graph = new ProvenanceGraph({ name: 'FileChange', version: '1.0.0' });
-// const registry = new ActionFunctionRegistry();
-// const tracker = new ProvenanceTracker(registry, graph);
-// const traverser = new ProvenanceGraphTraverser(registry, graph);
-// // const calculator = new Calculator(graph, registry, tracker, traverser);
-// const fileChange = new FileChange(graph, registry, tracker, traverser);
-
-
-
-// function makeComment() {
-//     const method = "MakeComm";
-//     let request = new XmlRpcRequest("http://localhost:1337/RPC2", method);
-//     request.addParam(document.getElementById("n1")).value;
-//     request.addParam(document.getElementById("n2")).value;
-//     let response = request.send();
-//     console.log(response);
-// }
-// function makeJump() {
-//     const method = "Jump";
-//     let request:any = new XmlRpcRequest("http://localhost:1337/RPC2", method);
-//     request.addParam(<HTMLElement>document.getElementById("n3")).value;
-//     let response = request.send();
-//     // alert(response.parseXML());
-// }
-// function setColor() {
-//     const method = "SetColor";
-//     let request:any = new XmlRpcRequest("http://localhost:1337/RPC2", method);
-//     request.addParam(<HTMLElement>document.getElementById("n4")).value;
-//     request.addParam(<HTMLElement>document.getElementById("n5")).value;
-//     let response = request.send();
-//     // alert(response.parseXML());
-// }
-// function undo() {
-//     const method = "Undo";
-//     let request:any = new XmlRpcRequest("http://localhost:1337/RPC2", method);
-//     let response = request.send();
-//     // alert(response.parseXML());
-// }
-
