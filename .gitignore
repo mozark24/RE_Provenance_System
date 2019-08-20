@@ -4,3 +4,7 @@ node_modules/
 .idea/
 @visualstorytelling_old/
 @visualstorytelling/
+package-lock.json
+yarn.lock
+github_deploy_key.enc
+.travis.yml
