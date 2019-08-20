@@ -12,6 +12,7 @@ import {
   ProvenanceSlide,
   ProvenanceSlidedeck,
   ProvenanceSlidedeckPlayer,
+  // serializeProvenanceGraph,
 } from '@visualstorytelling/provenance-core';
 
 import { ProvenanceTreeVisualization } from '@visualstorytelling/provenance-tree-visualization';
@@ -22,13 +23,24 @@ import 'normalize.css';
 import './style.scss';
 import '@visualstorytelling/slide-deck-visualization/dist/bundle.css';
 import * as io from "socket.io-client";
+// import { restoreProvenanceGraph } from '../@visualstorytelling_old/provenance-core/dist/types/ProvenanceGraph';
+// import { SerializedProvenanceGraph } from '../@visualstorytelling_old/provenance-core/dist/types/api';
 // import './fileChange.ts';
 
 
 const visDiv: HTMLDivElement = document.getElementById('vis') as HTMLDivElement;
-const stateDiv: HTMLDivElement = document.getElementById(
-  'state',
-) as HTMLDivElement;
+
+// const stateDiv: HTMLDivElement = document.getElementById(
+//   'state',
+// ) as HTMLDivElement;
+
+// var actionsDiv: HTMLDivElement = document.getElementById('actionsDiv') as HTMLDivElement;
+
+const saveDivBtn: HTMLButtonElement = document.getElementById(
+     'Save',) as HTMLButtonElement;
+
+const loadDivBtn: HTMLButtonElement = document.getElementById(
+      'Load',) as HTMLButtonElement;     
 
 // const updateCommentBtn: HTMLButtonElement = document.getElementById(
 //   'makeComment',) as HTMLButtonElement;
@@ -83,7 +95,7 @@ var requestFile = socket.on("fileChanged", async (data: string) => {
                   userIntent: 'comment',
                 },
             }, true);
-            node.label = "CommentUpdated: "+ newNode.address;
+            node.label = "Comment: "+ newNode.address;
         } 
         else if (newNode.type == 'view') {
             const node = await tracker.applyAction({       
@@ -114,7 +126,7 @@ var requestFile = socket.on("fileChanged", async (data: string) => {
                   userIntent: 'func_name_updated',
                 }, 
             }, true);
-            node.label = "FuncNameUpdate: " + newNode.newFuncName;
+            node.label = "FuncName: " + newNode.newFuncName;
         }
         else if (newNode.type == 'func_name_type_updated') {
           console.log("Func_name_type_updated");
@@ -130,7 +142,7 @@ var requestFile = socket.on("fileChanged", async (data: string) => {
                   userIntent: 'func_name_type_updated',
                 }, 
             }, true);
-            node.label = "FuncNameTypeUpdate: " + newNode.newFuncName + " " + newNode.newFuncType;
+            node.label = "FuncNameType: " + newNode.newFuncName + " " + newNode.newFuncType;
         }
         else if (newNode.type == 'func_type_updated') {
           console.log("Func_type_updated");
@@ -146,7 +158,7 @@ var requestFile = socket.on("fileChanged", async (data: string) => {
                   userIntent: 'func_type_updated',
                 }, 
             }, true);
-            node.label = "FuncTypeUpdate: " + newNode.newFuncType;
+            node.label = "FuncType: " + newNode.newFuncType;
         }
         else if (newNode.type == 'func_removed') {
           const node = await tracker.applyAction({      
@@ -258,51 +270,48 @@ var requestFile = socket.on("fileChanged", async (data: string) => {
     
 });
 
-graph.on('currentChanged', (event) => {
-  stateDiv.innerHTML = fileChange.currentState();
-});
-
-
-// fileChange.setupBasicGraph().then(() => {
-// let provenanceTreeVisualization = new ProvenanceTreeVisualization(
-//   traverser,
-//   visDiv,
-// );
+// /* Display State Type on top */
+// graph.on('currentChanged', (event) => {
+//   stateDiv.innerHTML = fileChange.currentState();
 // });
 
 
-// updateCommentBtn.addEventListener('click', async () => {
-//   const method = "MakeComm";
-//   let request = new (XmlRpcRequest as any)("http://localhost:1337/RPC2", method);
-//   request.addParam((<HTMLInputElement>document.getElementById("n1")).value);
-//   request.addParam((<HTMLInputElement>document.getElementById("n2")).value);
-//   let response = await request.send();
-//   console.log(response);
+// graph.on('nodeAdded', () => {
+//   // stateDiv.innerHTML = fileChange.currentState();
+//   const serializableGraph = serializeProvenanceGraph(graph);
+//   actionsDiv.innerHTML = JSON.stringify(serializableGraph);
 // });
 
-// updateJumpBtn.addEventListener('click', async () => {
-//   const method = "Jump";
-//   let request = new (XmlRpcRequest as any)("http://localhost:1337/RPC2", method);
-//   request.addParam((<HTMLInputElement>document.getElementById("n3")).value);
-//   let response = await request.send();
-//   console.log(response);
+// function download(content:any, fileName:any, contentType:any) {
+//   var a = document.createElement("a");
+//   var file = new Blob([content], {type: contentType});
+//   a.href = URL.createObjectURL(file);
+//   a.download = fileName;
+//   a.click();
+// }
+
+// // const serializableGraph = serializeProvenanceGraph(graph);
+// saveDivBtn.addEventListener('click', async () => {
+//   const serializableGraph = serializeProvenanceGraph(graph);
+//   const actionsDiv = JSON.stringify(serializableGraph);
+//   download(actionsDiv, 'json.txt', 'application/json');
 // });
 
-// updateColorBtn.addEventListener('click', async () => {
-//   const method = "SetColor";
-//   let request = new (XmlRpcRequest as any)("http://localhost:1337/RPC2", method);
-//   request.addParam((<HTMLInputElement>document.getElementById("n4")).value);
-//   request.addParam((<HTMLInputElement>document.getElementById("n5")).value);
-//   let response = await request.send();
-//   console.log(response);
-// });
+// document.getElementById("file-input").addEventListener("change", async (e) => {
+//   var file = (<HTMLInputElement>e.target).files[0];
+//   var reader = new FileReader();
+//   reader.onload = file => {
+//       var contents: any = file.target;
+//       this.text = contents.result; 
+//       console.log(this.text.toString());    // debug - working up to here
 
-// updateUndoBtn.addEventListener('click', async () => {
-//   const method = "Undo";
-//   let request = new (XmlRpcRequest as any)("http://localhost:1337/RPC2", method);
-//   let response = await request.send();
-//   console.log(response);
-// });
+//       var graphLoad:SerializedProvenanceGraph = JSON.parse(this.text);
+//       graph = restoreProvenanceGraph(graphLoad);
+//   };
+//     reader.readAsText(file);
+// }, false);  
+
+
 
 let provenanceTreeVisualization: ProvenanceTreeVisualization;
 
@@ -332,3 +341,61 @@ fileChange.setupBasicGraph().then(() => {
     player.play();
   });
 });
+
+
+// function readSingleFile(e:any) {
+//   var fileName = e.target.files[0];
+//   if (!fileName) {
+//       return;
+//   }
+//   var reader = new FileReader();
+//   var self = this;
+//   reader.onload = file => {
+//       var contents: any = file.target;
+//       self.text = contents.result; 
+//   };
+//   reader.readAsText(fileName);
+// }
+
+// interface HTMLInputEvent extends Event {
+//   target: HTMLInputElement & EventTarget;
+// }
+
+// loadDivBtn.addEventListener('click', async (e) => {
+//   var input = e.target as HTMLElement;
+//   var reader = new FileReader();
+//   reader.onload = function(){
+//     var text = reader.result;
+//     console.log(reader.result.toString());
+//   };
+//   // reader.readAsText(input);  
+// });
+
+// function displayContents(contents:any) {
+//   var element = document.getElementById('file-content');
+//   element.innerHTML = contents;
+// }
+
+// function readSingleFile(e:any) { 
+//   var file = e.target.files[0];
+//   if (!file) {
+//     return;
+//   }
+//   var reader = new FileReader();
+//   reader.onload = function(e) {
+//     var contents = e.target.dispatchEvent;
+//     // Display file content
+//     const graph = JSON.parse(contents);
+//     restoreProvenanceGraph(graph);
+//     // displayContents(contents);
+//   };
+//   // reader.readAsText(file);
+// }    
+ 
+// document.getElementById('file-input').addEventListener('change', readSingleFile, false);
+
+// let graph2 = new ProvenanceGraph({ name: 'FileChange', version: '1.0.0' });
+// loadDivBtn.addEventListener('click', async () => {
+//   actionsDiv.innerHTML = JSON.stringify(serializableGraph);
+//   graph2 = restoreProvenanceGraph(serialGraph);
+// });
