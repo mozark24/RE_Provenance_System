@@ -12,7 +12,9 @@ import {
   ProvenanceSlide,
   ProvenanceSlidedeck,
   ProvenanceSlidedeckPlayer,
-  // serializeProvenanceGraph,
+  serializeProvenanceGraph,
+  restoreProvenanceGraph,
+  SerializedProvenanceGraph
 } from '@visualstorytelling/provenance-core';
 
 import { ProvenanceTreeVisualization } from '@visualstorytelling/provenance-tree-visualization';
@@ -39,8 +41,8 @@ const visDiv: HTMLDivElement = document.getElementById('vis') as HTMLDivElement;
 const saveDivBtn: HTMLButtonElement = document.getElementById(
      'Save',) as HTMLButtonElement;
 
-const loadDivBtn: HTMLButtonElement = document.getElementById(
-      'Load',) as HTMLButtonElement;     
+// const loadDivBtn: HTMLButtonElement = document.getElementById(
+//       'file-input',) as HTMLButtonElement;     
 
 // const updateCommentBtn: HTMLButtonElement = document.getElementById(
 //   'makeComment',) as HTMLButtonElement;
@@ -53,12 +55,11 @@ const loadDivBtn: HTMLButtonElement = document.getElementById(
 
   
 // const graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' });
-const graph = new ProvenanceGraph({ name: 'FileChange', version: '1.0.0' });
+let graph = new ProvenanceGraph({ name: 'FileChange', version: '1.0.0' });
 const registry = new ActionFunctionRegistry();
 const tracker = new ProvenanceTracker(registry, graph);
 const traverser = new ProvenanceGraphTraverser(registry, graph);
 // const calculator = new Calculator(graph, registry, tracker, traverser);
-const fileChange = new FileChange(graph, registry, tracker, traverser);
 
 let player: ProvenanceSlidedeckPlayer<ProvenanceSlide>;
 const playBtn: HTMLButtonElement = document.getElementById(
@@ -74,6 +75,7 @@ socket.on("connected", function(data: any) {
     console.log("Connected User?", data.accept);
 });
 // var viewlock = true;
+
 
 var requestFile = socket.on("fileChanged", async (data: string) => {
     // $("#dataFile").html(data + "<br/>");
@@ -282,36 +284,38 @@ var requestFile = socket.on("fileChanged", async (data: string) => {
 //   actionsDiv.innerHTML = JSON.stringify(serializableGraph);
 // });
 
-// function download(content:any, fileName:any, contentType:any) {
-//   var a = document.createElement("a");
-//   var file = new Blob([content], {type: contentType});
-//   a.href = URL.createObjectURL(file);
-//   a.download = fileName;
-//   a.click();
-// }
+function download(content:any, fileName:any, contentType:any) {
+  var a = document.createElement("a");
+  var file = new Blob([content], {type: contentType});
+  a.href = URL.createObjectURL(file);
+  a.download = fileName;
+  a.click();
+}
 
-// // const serializableGraph = serializeProvenanceGraph(graph);
-// saveDivBtn.addEventListener('click', async () => {
-//   const serializableGraph = serializeProvenanceGraph(graph);
-//   const actionsDiv = JSON.stringify(serializableGraph);
-//   download(actionsDiv, 'json.txt', 'application/json');
-// });
+// const serializableGraph = serializeProvenanceGraph(graph);
+saveDivBtn.addEventListener('click', async () => {
+  const serializableGraph = serializeProvenanceGraph(graph);
+  const actionsDiv = JSON.stringify(serializableGraph);
+  download(actionsDiv, 'json.txt', 'application/json');
+});
 
-// document.getElementById("file-input").addEventListener("change", async (e) => {
-//   var file = (<HTMLInputElement>e.target).files[0];
-//   var reader = new FileReader();
-//   reader.onload = file => {
-//       var contents: any = file.target;
-//       this.text = contents.result; 
-//       console.log(this.text.toString());    // debug - working up to here
+document.getElementById("file-input").addEventListener("change", async (e) => {
+  var file = (<HTMLInputElement>e.target).files[0];
+  var reader = new FileReader();
+  reader.onload = file => {
+      var contents: any = file.target;
+      this.text = contents.result; 
+      console.log(this.text.toString()); 
 
-//       var graphLoad:SerializedProvenanceGraph = JSON.parse(this.text);
-//       graph = restoreProvenanceGraph(graphLoad);
-//   };
-//     reader.readAsText(file);
-// }, false);  
+      var graphLoad:SerializedProvenanceGraph = JSON.parse(this.text);
+      // graph = new ProvenanceGraph({ name: 'FileChange', version: '1.0.0' });
+      graph = restoreProvenanceGraph(graphLoad);
+      // fileChange.currentState(); 
+  };
+    reader.readAsText(file);
+}, false);  
 
-
+const fileChange = new FileChange(graph, registry, tracker, traverser);
 
 let provenanceTreeVisualization: ProvenanceTreeVisualization;
 
@@ -336,10 +340,12 @@ fileChange.setupBasicGraph().then(() => {
     (slide) => (slideDeck.selectedSlide = slide),
   );
 
-  playBtn.addEventListener('click', () => {
-    player.setSlideIndex(slideDeck.slides.indexOf(slideDeck.selectedSlide));
-    player.play();
-  });
+  if (playBtn){
+    playBtn.addEventListener('click', () => {
+      player.setSlideIndex(slideDeck.slides.indexOf(slideDeck.selectedSlide));
+      player.play();
+    });
+  }
 });
 
 
