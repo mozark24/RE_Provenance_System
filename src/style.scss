@@ -22,9 +22,9 @@ body {
 // }
 
 #vis {
-  border: 2px solid lightgrey;
+  border: 1px solid lightgrey;
   border-radius: 5px;
-  margin: 2px;
+  margin: 0px;
 
   * {
     border: none;
@@ -37,7 +37,7 @@ body {
   color: yellow;
   vertical-align: middle;
 
-  font-size: 80%;
+  font-size: 100%;
   line-height: 1;
   // position: relative;
   top: -1px;
@@ -46,7 +46,7 @@ body {
   height: 7in;           // 300px;
   width: 300px;           // 300px;
   text-size-adjust: 100%;
-
+  font-weight: 400;
 }
 
 .node {
@@ -75,8 +75,8 @@ body {
   text {
     display: none;
     fill: black;
-    stroke-width: 0.2px;
-    font-family: sans-serif;
+    stroke-width: 0px;
+    font-family: Arial;
   }
 }
 
