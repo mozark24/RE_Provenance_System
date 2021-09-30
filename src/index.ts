@@ -55,11 +55,12 @@ const saveDivBtn: HTMLButtonElement = document.getElementById(
 
   
 // const graph = new ProvenanceGraph({ name: 'calculator', version: '1.0.0' });
+// const calculator = new Calculator(graph, registry, tracker, traverser);
 let graph = new ProvenanceGraph({ name: 'FileChange', version: '1.0.0' });
 const registry = new ActionFunctionRegistry();
 const tracker = new ProvenanceTracker(registry, graph);
 const traverser = new ProvenanceGraphTraverser(registry, graph);
-// const calculator = new Calculator(graph, registry, tracker, traverser);
+
 
 let player: ProvenanceSlidedeckPlayer<ProvenanceSlide>;
 const playBtn: HTMLButtonElement = document.getElementById(
@@ -78,7 +79,8 @@ socket.on("connected", function(data: any) {
 
 
 var requestFile = socket.on("fileChanged", async (data: string) => {
-    // $("#dataFile").html(data + "<br/>");
+    //$("#dataFile").html(data + "<br/>");
+	console.log("Data: " + data);
     console.log("typeof data: " + typeof data);
     if (data && data.length !== 0 ) {
         console.log(data);     
@@ -239,15 +241,15 @@ var requestFile = socket.on("fileChanged", async (data: string) => {
         }
         else if (newNode.type == 'highlight'){
           const node = await tracker.applyAction({      
-            do: 'highlight',
+            do: 'Highlight',
             doArguments: [newNode.address, newNode.colorNew],
-            undo: 'highlight',           
+            undo: 'Highlight',           
             undoArguments: [newNode.address, newNode.colorOld],      
             metadata: {
               createdBy: 'me',
               createdOn: 'now',
               tags: [],
-              userIntent: 'highlight',
+              userIntent: 'Highlight',
             }, 
           }, true);
           node.label = "Highlight: "+newNode.address;
