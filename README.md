@@ -9,17 +9,17 @@ Clone this repository, then:
 
 To run the full provenance system with Binary Ninja:
 1)  Open Binary Ninja
-2)  Enable Plugin 'Binja Start/Stop XML Server'
+2)  Select binary to analyze
+3)  Start plugin in Binary Ninja 'Binja Start/Stop XML Server'
+4)  Open Admin PowerShell window
+5)  Navigate to Directory:  Binja-NodeJS 
+6)  node .\fileupdate.js
+7)  Open new Powershell window
+8)  Navigate to Directory: RE_Provenance_System 
+9)  yarn start
 
-3)  Open Admin PowerShell window
-3a) Navigate to Directory:  Binja-NodeJS 
-3b) node .\fileupdate.js
+9)  Open Chrome
 
-4)  Open Powershell window
-4a) Navigate to Directory: RE_Provenance_System 
-4b) yarn start
+10) Navigate to: http://localhost:8080/
 
-5)  Open Chrome
-5a) Navigate to: http://localhost:8080/
-
-6)  Begin analyzing binary in Binary Ninja
+11)  Begin analyzing binary in Binary Ninja
