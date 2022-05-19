@@ -4,6 +4,8 @@ Three SensorRE software packages are required:
 - https://github.com/mozark24/RE_Provenance_System
 - https://github.com/mozark24/Binja-Plugin-Autocollect
 - https://github.com/mozark24/SensorRE_Server
+
+Required Javascript packages:
 - node (tested on 8.12.0)
 - yarn 
 
